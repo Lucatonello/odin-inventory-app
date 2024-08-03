@@ -12,4 +12,22 @@ async function getCategories(req, res) {
         res.status(500).send('Server error');
     }
 } 
-module.exports = getCategories;
+async function getItems(req, res) {
+    try {
+        const category = req.params.category
+        console.log(category);
+        let items = await db.query(`
+            SELECT name
+            FROM items  
+            WHERE category = $1
+        `, [category]);
+        res.render("items", { title: 'items', items: items.rows});
+    } catch(err) {
+        console.error('Error fetching items:', err);
+        res.status(500).send('Server error');
+    }
+}
+module.exports = {
+    getCategories,
+    getItems
+} 
