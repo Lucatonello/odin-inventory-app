@@ -9,8 +9,13 @@
     <h1>Items: </h1>
     <ol>
         <% items.forEach(item => { %>
-            <li><%= item.name %></li>
+            <li>
+                <% if (item.name !== 'undefined') { %>
+                    <%= item.name %>
+               <% } %>
+            </li>
        <% }); %>
     </ol>
+    <a href="/">Go back</a>
 </body>
 </html>

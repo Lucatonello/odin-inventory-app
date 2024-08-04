@@ -15,7 +15,6 @@ async function getCategories(req, res) {
 async function getItems(req, res) {
     try {
         const category = req.params.category
-        console.log(category);
         let items = await db.query(`
             SELECT name
             FROM items  
@@ -27,7 +26,28 @@ async function getItems(req, res) {
         res.status(500).send('Server error');
     }
 }
+async function addCategoryGet(req, res) {
+    res.render("add-category", { title: 'Add category'})
+}
+async function addCategoryPost(req, res) {
+    try {
+        const categoryName = req.body.categoryName || 'undefined';
+        const addCategoryQuery = await db.query(`
+            INSERT INTO
+            items (name, category)
+            VALUES ($1, $2)
+        `, [req.body.addItemsToCategory, categoryName]); 
+
+        res.redirect('/');
+    } catch (err) {
+        console.log('Error adding new category to the database', err);
+        res.status(500).send('Server error');
+    }
+}
+
 module.exports = {
     getCategories,
-    getItems
+    getItems,
+    addCategoryGet,
+    addCategoryPost
 } 

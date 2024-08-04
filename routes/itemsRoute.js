@@ -4,5 +4,7 @@ const itemsController  = require('../controllers/itemsController');
 
 router.get('/', itemsController.getCategories);
 router.get('/:category/items', itemsController.getItems);
+router.get('/add-category', itemsController.addCategoryGet);
+router.post('/', itemsController.addCategoryPost);
 
 module.exports = router;
