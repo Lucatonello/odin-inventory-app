@@ -114,6 +114,23 @@ async function deleteItem(req, res) {
         res.status(500).send('Server error');
     }
 }
+async function deleteCategory(req, res) {
+    try {
+        const category = req.params.category;
+        if (!category) {
+            throw new Error('Category name missing');
+        }
+        await db.query(`
+            DELETE 
+            FROM items
+            WHERE category = $1
+        `, [category]);
+        res.redirect('/');
+    } catch (err) {
+        console.error('Could not delete category', err);
+        res.status(500).send('Server error');
+    }
+}
 
 module.exports = {
     getCategories,
@@ -124,5 +141,6 @@ module.exports = {
     addItemPost,
     updateItemGet,
     updateItemPost,
-    deleteItem
+    deleteItem,
+    deleteCategory
 };

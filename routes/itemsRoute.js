@@ -15,6 +15,8 @@ router.post('/add-item', itemsController.addItemPost);
 router.get('/:category/:item/update-item', itemsController.updateItemGet);
 router.post('/update-item', itemsController.updateItemPost);
 
-router.post('/:category/:item/delete-item', itemsController.deleteItem)
+router.post('/:category/:item/delete-item', itemsController.deleteItem);
+
+router.post('/:category/delete-category', itemsController.deleteCategory);
 
 module.exports = router;

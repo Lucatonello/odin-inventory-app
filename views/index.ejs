@@ -10,7 +10,10 @@
     <ul>
         <% categories.forEach(category => { %>
             <li>
-                <a href="<%= category.category %>/items"> <%= category.category %> </a>
+                <a href="<%= category.category %>/items"> <%= category.category %></a>
+                <form action="/<%= category.category %>/delete-category" method="POST">
+                    <button type="submit">Delete</button>                
+                </form>
             </li>
        <% }); %>
     </ul>
