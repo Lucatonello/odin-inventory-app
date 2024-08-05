@@ -19,6 +19,7 @@ async function getItems(req, res) {
             SELECT name
             FROM items  
             WHERE category = $1
+            ORDER BY id
         `, [category]);
         res.render("items", { title: 'items', items: items.rows, category: category});
     } catch(err) {
@@ -32,12 +33,14 @@ async function addCategoryGet(req, res) {
 async function addCategoryPost(req, res) {
     try {
         const categoryName = req.body.categoryName || 'undefined';
-        const addCategoryQuery = await db.query(`
-            INSERT INTO
-            items (name, category)
-            VALUES ($1, $2)
-        `, [req.body.addItemsToCategory, categoryName]); 
-
+        const itemName = req.body.addItemsToCategory;
+        if (itemName && itemName.trim() !== '') {
+            await db.query(`
+                INSERT INTO
+                items (name, category)
+                VALUES ($1, $2)
+            `, [itemName, categoryName]); 
+        }
         res.redirect('/');
     } catch (err) {
         console.error('Error adding new category to the database', err);
@@ -79,6 +82,7 @@ async function updateItemPost(req, res) {
     try {
         const newName = req.body.newName;
         const oldName = req.body.oldName;
+        const category = req.body.category;
         console.log(oldName);
         
         await db.query(`
@@ -86,10 +90,28 @@ async function updateItemPost(req, res) {
             SET name = $1
             WHERE name = $2
         `, [newName, oldName]);
-        res.redirect('/')
+        res.redirect('/' + category + '/items');
     } catch (err) {
         console.error('Could not update the item', err);
         res.status(500).send("Server error");
+    }
+}
+async function deleteItem(req, res) {
+    try {
+        const name = req.params.item;
+        const category = req.params.category;
+        if (!name || !category) {
+            throw new Error('Name or category missing');
+        }
+        await db.query(`
+            DELETE 
+            FROM items
+            WHERE name = $1 AND category = $2
+        `, [name, category]);
+        res.redirect('/' + category + '/items');
+    } catch (err) {
+        console.error('Could not delete item', err);
+        res.status(500).send('Server error');
     }
 }
 
@@ -101,5 +123,6 @@ module.exports = {
     addItemGet,
     addItemPost,
     updateItemGet,
-    updateItemPost
+    updateItemPost,
+    deleteItem
 };

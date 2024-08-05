@@ -9,10 +9,13 @@
     <h1>Items: </h1>
     <ol>
         <% items.forEach(item => { %>
-            <% if (item.name !== 'undefined') { %>
+            <% if (item.name && item.name !== 'undefined') { %>
                 <li>
                     <%= item.name %>
                     <a href="/<%= category %>/<%= item.name %>/update-item">Update</a>
+                    <form action="/<%= category %>/<%= item.name %>/delete-item" method="POST">
+                        <button type="submit">Delete</button>                
+                    </form>
                 </li>
             <% } %>
        <% }); %>
