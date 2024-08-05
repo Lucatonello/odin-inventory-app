@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %>></title>
+</head>
+<body>
+    <h1>Update item</h1>
+    <form action="/update-item" method="POST">
+        <input type="hidden" name="category" value="<%= category %>">
+        <input type="hidden" name="oldName" value="<%= oldName %>">
+        <label for="update">New name: </label>
+        <input type="text" name="newName" required>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

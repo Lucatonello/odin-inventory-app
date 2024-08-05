@@ -70,6 +70,28 @@ async function addItemPost(req, res) {
         res.status(500).send('Server error');
     }
 }
+async function updateItemGet(req, res) {
+    const category = req.params.category;
+    const oldName = req.params.item;
+    res.render("update-item", { title: 'Update item', category: category, oldName: oldName});
+}
+async function updateItemPost(req, res) {
+    try {
+        const newName = req.body.newName;
+        const oldName = req.body.oldName;
+        console.log(oldName);
+        
+        await db.query(`
+            UPDATE items
+            SET name = $1
+            WHERE name = $2
+        `, [newName, oldName]);
+        res.redirect('/')
+    } catch (err) {
+        console.error('Could not update the item', err);
+        res.status(500).send("Server error");
+    }
+}
 
 module.exports = {
     getCategories,
@@ -77,5 +99,7 @@ module.exports = {
     addCategoryGet,
     addCategoryPost,
     addItemGet,
-    addItemPost
-} 
+    addItemPost,
+    updateItemGet,
+    updateItemPost
+};

@@ -12,4 +12,7 @@ router.post('/', itemsController.addCategoryPost);
 router.get('/:category/add-item', itemsController.addItemGet);
 router.post('/add-item', itemsController.addItemPost);
 
+router.get('/:category/:item/update-item', itemsController.updateItemGet);
+router.post('/update-item', itemsController.updateItemPost);
+
 module.exports = router;
